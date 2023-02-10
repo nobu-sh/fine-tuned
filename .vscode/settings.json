@@ -1,9 +1,7 @@
 {
   "editor.tabSize": 2,
   "files.eol": "\n",
-  "files.associations": {
-    "*.json": "jsonc"
-  },
+  "files.associations": { "*.json": "jsonc" },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
