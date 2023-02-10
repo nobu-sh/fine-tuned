@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-FORCE_COLOR=0 npx lint-staged
+exec >/dev/console 2>&1;
+
+npx lint-staged
