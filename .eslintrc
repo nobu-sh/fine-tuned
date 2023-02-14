@@ -8,7 +8,13 @@
     "jest": true
   },
   "rules": {
-    "indent": ["error", 2],
-    "eol-last": "error"
+    "indent": "off",
+    "@typescript-eslint/indent": ["error", 2, { "SwitchCase": 1 }],
+    "eol-last": "error",
+    "quotes": ["error", "single"],
+    "semi": "off",
+    "@typescript-eslint/semi": "error",
+    "@typescript-eslint/member-delimiter-style": "error",
+    "@typescript-eslint/no-extraneous-class": "off"
   }
 }

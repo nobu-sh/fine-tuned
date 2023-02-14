@@ -4,6 +4,8 @@
   "files.associations": { "*.json": "jsonc" },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
   "explorer.fileNesting.patterns": {
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock"
