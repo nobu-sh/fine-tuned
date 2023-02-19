@@ -38,7 +38,7 @@ export class YouTube extends Extractor {
       throw new Error('Invalid URL provided for streaming.');
 
     // get the dl stream
-    const _s = await dl.stream(info.streamingURL, { discordPlayerCompatibility: true });
+    const _s = await dl.stream(info.streamingURL, { discordPlayerCompatibility: true, quality: 2 });
 
     return _s.stream;
   }

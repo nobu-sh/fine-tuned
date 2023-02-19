@@ -2,7 +2,7 @@ import { YouTube } from 'youtube-sr';
 import { QueryType } from '../constants';
 
 // SECTION - Scary Regex Shit stolen from https://github.com/Androz2091/discord-player
-// hopefully these urls dont change toooooo often ;/
+// hopefully these are optimized too lazy to give af. ;/
 const spotifySongRegex = /^https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:track\/|\?uri=spotify:track:)((\w|-){22})(\?si=.+)?$/;
 const spotifyPlaylistRegex = /^https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:playlist\/|\?uri=spotify:playlist:)((\w|-){22})(\?si=.+)?$/;
 const spotifyAlbumRegex = /^https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:album\/|\?uri=spotify:album:)((\w|-){22})(\?si=.+)?$/;

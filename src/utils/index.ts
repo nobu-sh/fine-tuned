@@ -5,3 +5,4 @@ export * from './timecode';
 export * from './authorize';
 export * from './warn';
 export * from './allSettled';
+export * from './wait';

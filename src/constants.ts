@@ -3,9 +3,7 @@ export enum QueryType {
    * Marks query as YouTube playlist url.
    * If it is not a playlist it will raise an error!
    */
-  // NOTE - make if playlist is selected but not a valid 
-  // playlist url then attempt to find the playlist by
-  // give query.
+  // TODO - searchable playlists
   YOUTUBE_PLAYLIST = 'youtubePlaylist',
   /**
    * Marks the query as a YouTube search.

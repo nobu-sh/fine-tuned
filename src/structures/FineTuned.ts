@@ -1,15 +1,13 @@
 import type { Client } from 'discord.js';
 import { setToken } from 'play-dl';
-import { Player } from './Player';
 import { warn } from '../utils';
 
-export class FineTuned extends Player {
+export class FineTuned {
   public readonly client: Client;
   public readonly options: FineTunedOptions;
   private _spotifyReady = false; 
 
   public constructor(client: Client, options?: FineTunedOptions) {
-    super();
     this.client = client;
     this.options = options ?? {};
 

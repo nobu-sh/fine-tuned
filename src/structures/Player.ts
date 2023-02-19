@@ -1,23 +1,13 @@
-import type { Track } from './Track';
+import type { VoiceConnection } from '@discordjs/voice';
 import { Resolver } from '../extractors';
+import { Transport, TransportOptions } from '../stream';
 
 export class Player extends Resolver {
-  private _track: Track | undefined;
-  private _isPaused = false;
+  private _transport: Transport | null = null;
 
-  public constructor() {
-    super();
-    return this;
-  }
+  public getTransport(connection: VoiceConnection, options?: TransportOptions): Transport {
+    if (!this._transport?.useable) this._transport = new Transport(connection, options);
 
-  public play(track?: Track) {
-    if (this._isPaused) this._isPaused = false;
-    if (!track) return;
-
-    this._track = track;
-  }
-
-  public pause() {
-    if (!this._isPaused) this._isPaused = true;
+    return this._transport;
   }
 }

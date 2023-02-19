@@ -23,6 +23,9 @@ export class Resolver {
     const type = QueryResolver.resolve(query);
 
     // FIXME: Support other options
+    // FIXME: rather than error have unimplemented queries 
+    // return an empty response then multiple extractors can be
+    // used on a single query, deep join results into one response.
     const searchUnsettled = this.extractors.map((e) => e.handle(query, { type }));
     const searches = await Promise.allSettled(searchUnsettled);
 
