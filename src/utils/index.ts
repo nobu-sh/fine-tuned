@@ -6,3 +6,5 @@ export * from './authorize';
 export * from './warn';
 export * from './allSettled';
 export * from './wait';
+export * from './ExtraAudioFilters';
+export * from './makeBands';

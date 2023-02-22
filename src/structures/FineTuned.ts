@@ -1,10 +1,12 @@
 import type { Client } from 'discord.js';
 import { setToken } from 'play-dl';
+import { QueueManager } from './QueueManager';
 import { warn } from '../utils';
 
 export class FineTuned {
   public readonly client: Client;
   public readonly options: FineTunedOptions;
+  public readonly queue = new QueueManager();
   private _spotifyReady = false; 
 
   public constructor(client: Client, options?: FineTunedOptions) {

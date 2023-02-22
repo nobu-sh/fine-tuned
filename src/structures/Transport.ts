@@ -12,11 +12,10 @@ import {
   VoiceConnectionStatus,
   VoiceConnectionDisconnectReason,
 } from '@discordjs/voice';
-import { createFFmpegStream } from './ffmpeg';
-import type { Track } from '../structures';
+import type { Track } from './Track';
+import { createFFmpegStream } from '../stream/ffmpeg';
 import { wait, warn } from '../utils';
 
-// FIXME - Lets make some of this private please.
 export class Transport {
   private readonly _player: AudioPlayer;
   private _currentResource: AudioResource<Track> | null = null;
@@ -211,12 +210,21 @@ export class Transport {
   }
 
   /**
-   * Stops whatever the transport is currently piping.
-   * and transitions into an idle state.
+   * Stops whatever the player is currently playing and transitions
+   * transport into an idle state.
+   * @returns 
+   */
+  public stop(): boolean {
+    return this._player.stop();
+  }
+
+  /**
+   * Completely destroys the transport and the active voice connection.
    * @returns
    */
   public murder(): boolean {
-    return this._player.stop();
+    if (this.useable) this._connection.destroy();
+    return this.stop();
   }
 }
 
