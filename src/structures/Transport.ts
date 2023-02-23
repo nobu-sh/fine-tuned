@@ -13,7 +13,7 @@ import {
   VoiceConnectionDisconnectReason,
 } from '@discordjs/voice';
 import type { Track } from './Track';
-import { createFFmpegStream } from '../stream/ffmpeg';
+import { createFFmpegStream, FFmpegStreamOptions } from '../stream';
 import { wait, warn } from '../utils';
 
 export class Transport {
@@ -156,12 +156,12 @@ export class Transport {
    * @param track Track to get stream for.
    * @returns
    */
-  public async getStream(track: Track): Promise<AudioResource<Track>> {
+  public async getStream(track: Track, options?: FFmpegStreamOptions): Promise<AudioResource<Track>> {
     // Get the Readable stream from the extractor.
-    const stream = await track.extractor.stream(track);
+    const streamingUrl = await track.extractor.stream(track);
     // Create FFmpeg stream from Readable stream from extractor.
     // TODO: Support filters etc etc.
-    const pcm = createFFmpegStream(stream);
+    const pcm = createFFmpegStream(streamingUrl, options);
 
     // Return a new audio resource from above data.
     return createAudioResource(pcm, {
@@ -171,22 +171,52 @@ export class Transport {
     });
   }
 
+  // TODO: when audio resource is destroyed is read stream still reading
+  // or is it fully destroyed too?
+
   /**
    * Plays a new track on through the transport. 
    * @param track Track to play
    * @returns 
    */
-  public async play(track: Track): Promise<this> {
+  public async play(track: Track, options?: FFmpegStreamOptions): Promise<this> {
     // Waits for the voice connection state to be ready.
     if (this._connection.state.status !== VoiceConnectionStatus.Ready)
       await this.untilReady();
 
     // Fetch stream with the track.
-    const stream = await this.getStream(track);
+    const stream = await this.getStream(track, options);
     // Set the track as the current playing resource.
     this._currentResource = stream;
 
     // Start playing the current resource.
+    this._player.play(this._currentResource);
+
+    return this;
+  }
+
+  /**
+   * Seeks whatever is currently playing to a certain duration.
+   * @param seek Playback to seek to.
+   * @remarks Because we are using FFmpeg and how our pcm functions we have to
+   * currently create an entire new stream resource seeked to provided point.
+   * This ultimately makes seeking somewhat slow. There is not much that can be done
+   * at the moment.
+   * @todo Use dsp pipeline to cache past chunks from readable to allow seeking
+   * to a specfic point instantaneously.
+   * @returns 
+   */
+  public async seekTo(seek: number): Promise<this> {
+    if (!this._currentResource)
+      return this;
+
+    // This makes seeks a bit slow. Should probably cache readable streams until they are finished
+    // if they are live streams no cache!!
+    const newStream = await this.getStream(this._currentResource.metadata, {
+      seek,
+    });
+
+    this._currentResource = newStream;
     this._player.play(this._currentResource);
 
     return this;

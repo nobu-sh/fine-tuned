@@ -41,7 +41,6 @@ export class Resolver {
    * @returns 
    */
   public async controlledSearch(query: string, type: QueryType): Promise<ExtractorSearchResult> {
-    // FIXME: Support other options
     const searchUnsettled = this.extractors.map((e) => e.handle(query, { type }));
     const searches = await Promise.allSettled(searchUnsettled);
 

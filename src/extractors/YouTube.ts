@@ -1,4 +1,3 @@
-import type { Readable } from 'stream';
 import * as dl from 'play-dl';
 import { YouTube as YTSR, SearchOptions, PlaylistOptions } from 'youtube-sr';
 import { Extractor, ExtractorSearchOptions, ExtractorSearchResult } from './Extractor';
@@ -27,21 +26,48 @@ export class YouTube extends Extractor {
   }
 
   /**
-   * Takes the given track information and returns a readable stream.
+   * Takes the given track information and returns the url to the readable stream.
    * @param info Track information.
    */
-  public async stream(info: Track): Promise<Readable> {
-    // Validate the url is a YouTube URL.
-    if (!info.streamingURL)
-      throw new Error('No URL provided for streaming.');
-    if (!YouTube.validateURL(info.streamingURL))
-      throw new Error('Invalid URL provided for streaming.');
+  public async stream(info: Track): Promise<string> {
+    if (info.streamingURL) return info.streamingURL;
+    if (!info.destinationURL)
+      throw new Error(`[Track "${info.toString()}"] has no destination url.`);
 
-    // get the dl stream
-    const _s = await dl.stream(info.streamingURL, { discordPlayerCompatibility: true, quality: 2 });
+    // FIXME - url expire time, automatic streaming url refreshes
+    // FIXME - ytdl is a lot better we should really start enforcing data
+    // filled through there and not ytsr before production
+    // URLs last 6 hours it appears. The exact expiration date is located in the url
+    const inf = await dl.video_info(info.destinationURL);
+    console.log(inf);
+    if (inf.LiveStreamData.hlsManifestUrl) {
+      info.streamingURL = inf.LiveStreamData.hlsManifestUrl;
 
-    return _s.stream;
+      return inf.LiveStreamData.hlsManifestUrl;
+    }
+
+    const fmts = inf.format
+      .filter((fmt) => {
+        // const re = /\/manifest\/hls_(variant|playlist)\//;
+        // FIXME - the manifest is not in the formats?? its in the LiveSteamData object
+        // if (inf.video_details.live) return re.test(fmt.url) && typeof fmt.bitrate === 'number';
+        if (!fmt.url) return false;
+        return typeof fmt.bitrate === 'number';
+      })
+      .sort((a, b) => Number(b.bitrate) - Number(a.bitrate));
+
+    // FIXME - videos don't have quality labels on audio only streams, live streams always have quality labels and they start with AUDIO_
+    // videos also have a field for audioQuality for audio only streams
+    const fmt = fmts.find((fmt) => !fmt.qualityLabel) ?? fmts.sort((a, b) => Number(a.bitrate) - Number(b.bitrate))[0];
+    // Eslint is on some coke or something bro
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!fmt?.url) throw new Error(`Failed to get streaming url for [Track "${info.toString()}"]`);
+    info.streamingURL = fmt.url;
+    
+    return fmt.url;
   }
+
+  // TODO: ditch youtube-sr for stream-dl
 
   /**
    * Add the youtube playlist query handler.

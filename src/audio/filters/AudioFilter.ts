@@ -116,17 +116,17 @@ export class AudioFilter extends PCMTransformer {
     return true;
   }
 
-  // TODO
-  public seek(duration: number): void {
-    // determines the sample to seek to
-    // this._seekPos = (duration / 1000) * this.targetSampleRate;
-    void duration;
-    throw new Error('Not Implemented');
+  // TODOS Maybe Maybe Not
+  // public seek(duration: number): void {
+  //   // determines the sample to seek to
+  //   // this._seekPos = (duration / 1000) * this.targetSampleRate;
+  //   void duration;
+  //   throw new Error('Not Implemented');
 
-    // this method has not been implemented as of right now
-    // Since we can only move forward in the stream,
-    // we would have to buffer the entire stream in order to implement backwards seek
-  }
+  //   // this method has not been implemented as of right now
+  //   // Since we can only move forward in the stream,
+  //   // we would have to buffer the entire stream in order to implement backwards seek
+  // }
 
   public override _transform(chunk: Buffer, _encoding: BufferEncoding, callback: TransformCallback): void {
     this._processedSamples++;

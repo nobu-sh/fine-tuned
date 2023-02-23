@@ -37,34 +37,34 @@ const baseFilters = {
   earrape: 'channelsplit,sidechaingate=level_in=64'
 };
 
-export type FiltersName = keyof typeof baseFilters;
-export type FiltersBooleanMapped = {
-  [key in FiltersName]: boolean;
+export type FFmpegFiltersName = keyof typeof baseFilters;
+export type FFmpegFiltersBooleanMapped = {
+  [key in FFmpegFiltersName]: boolean;
 };
 
-export class ExtraAudioFilters {
+export class FFmpegAudioFilters {
   public constructor() {
-    return ExtraAudioFilters;
+    return FFmpegAudioFilters;
   }
 
-  public static filters: Record<FiltersName, string> = baseFilters;
+  public static filters: Record<FFmpegFiltersName, string> = baseFilters;
 
-  public static get<K extends FiltersName>(name: K): string {
+  public static get<K extends FFmpegFiltersName>(name: K): string {
     return this.filters[name];
   }
 
-  public static has<K extends FiltersName>(name: K): boolean {
+  public static has<K extends FFmpegFiltersName>(name: K): boolean {
     return name in this.filters;
   }
 
-  public static *[Symbol.iterator](): IterableIterator<{ name: FiltersName; value: string }> {
+  public static *[Symbol.iterator](): IterableIterator<{ name: FFmpegFiltersName; value: string }> {
     for (const [k, v] of Object.entries(this.filters)) {
-      yield { name: k as FiltersName, value: v  };
+      yield { name: k as FFmpegFiltersName, value: v  };
     }
   }
 
-  public static get names(): FiltersName[] {
-    return Object.keys(this.filters) as FiltersName[];
+  public static get names(): FFmpegFiltersName[] {
+    return Object.keys(this.filters) as FFmpegFiltersName[];
   }
 
   // @ts-expect-error AudioFilters.length
@@ -77,7 +77,7 @@ export class ExtraAudioFilters {
    * @param filter The filter name
    * @returns
    */
-  public static create<K extends FiltersName>(filters?: K[]): string {
+  public static create<K extends FFmpegFiltersName>(filters?: K[]): string {
     if (!filters || !Array.isArray(filters)) return this.toString();
     return filters
       .filter((predicate) => typeof predicate === 'string')
@@ -91,7 +91,7 @@ export class ExtraAudioFilters {
    * @param value The ffmpeg args
    */
   public static define(filterName: string, value: string): void {
-    this.filters[filterName as FiltersName] = value;
+    this.filters[filterName as FFmpegFiltersName] = value;
   }
 
   /**

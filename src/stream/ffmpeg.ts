@@ -1,8 +1,17 @@
-import type { Readable } from 'stream';
 import { FFmpeg } from 'prism-media';
 
-export function FFMPEG_ARGS_PIPED(fmt?: string) {
+export interface FFmpegStreamOptions {
+  fmt?: string;
+  encoderArgs?: string[];
+  seek?: number;
+}
+
+export function FFMPEG_ARGS(url: string, fmt?: string) {
   return [
+    '-reconnect', '1',
+    '-reconnect_streamed', '1',
+    '-reconnect_delay_max', '5',
+    '-i', url,
     '-analyzeduration', '0',
     '-loglevel', '0',
     '-f', `${typeof fmt === 'string' ? fmt : 's16le'}`,
@@ -11,29 +20,22 @@ export function FFMPEG_ARGS_PIPED(fmt?: string) {
   ];
 }
 
-export interface FFmpegStreamOptions {
-  fmt?: string;
-  encoderArgs?: string[];
-}
-
-export function createFFmpegStream(stream: Readable, options: FFmpegStreamOptions = {}): FFmpeg {
+export function createFFmpegStream(stream: string, options: FFmpegStreamOptions = {}): FFmpeg {
   // Get needed arguments based on fmt.
-  const args = FFMPEG_ARGS_PIPED(options.fmt);
+  const args = FFMPEG_ARGS(stream, options.fmt);
 
   // If user defined arguments push them.
+  if (options.seek) args.unshift('-ss', String(options.seek));
   if (options.encoderArgs) args.push(...options.encoderArgs);
 
   // Create FFmpeg transcoder.
   const transcoder = new FFmpeg({ shell: false, args });
 
   // On stream close we want to destroy transcoder instance.
-  transcoder.on('close', transcoder.destroy);
-
-  // On stream error we want to also destroy the transcoder instance.
-  stream.on('error', transcoder.destroy);
-
-  // Pipe the readable stream to the transcoder.
-  stream.pipe(transcoder);
+  transcoder.on('close', () => {
+    console.log('closed');
+    transcoder.destroy();
+  });
 
   return transcoder;
 }

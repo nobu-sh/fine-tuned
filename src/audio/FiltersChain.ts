@@ -51,6 +51,7 @@ export class FiltersChain {
     this.destination = pipeline(src, /* resampler,*/ equalizerStream, dspStream, biquadStream, volumeTransformer, (err) => {
       if (err) {
         this.destroy();
+        // FIXME - this is dumb ngl
         if (!err.message.includes('ERR_STREAM_PREMATURE_CLOSE')) this.onError(err);
       }
     });

@@ -74,8 +74,24 @@ export class Queue extends Resolver {
     if (!this.connection)
       throw new Error('Connection not active, please link one.');
 
-    
     await this._transport!.play(this._queue[0]);
+
+    return this;
+  }
+
+  /**
+   * Seeks to a specfic position in the current track.
+   * @param seek Position to seek to.
+   * @returns 
+   */
+  public async seekTo(seek: number): Promise<this> {
+    if (!this.connection)
+      throw new Error('Connection not active, please link one and play something.');
+
+    if (!this._transport?.playing)
+      throw new Error('Nothing currently playing.');
+
+    await this._transport.seekTo(seek);
 
     return this;
   }

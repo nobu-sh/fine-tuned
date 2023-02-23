@@ -1,4 +1,4 @@
-import type { Readable } from 'stream';
+// import type { Readable } from 'stream';
 import { QueryType } from '../constants';
 import type { Playlist, Track } from '../structures';
 import type { Awaitable } from '../types';
@@ -46,10 +46,10 @@ export abstract class Extractor {
   public abstract handle(query: string, opts: ExtractorSearchOptions): Awaitable<ExtractorSearchResult>;
   
   /**
-   * Takes the given track information and returns a readable stream.
+   * Takes the given track information and returns a url to the readable stream.
    * @param info Track information.
    */
-  public abstract stream(info: Track): Awaitable<Readable>;
+  public abstract stream(info: Track): Awaitable<string>;
 
   /**
    * Handler for the spotify album query type.

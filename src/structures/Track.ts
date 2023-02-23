@@ -49,10 +49,10 @@ export class Track {
   /**
    * Useable converted URL for streaming.
    */
-  private _destinationUrl: string | undefined;
+  private _destinationUrl: string | null = null;
+  private _streamingUrl: string | null = null;
 
-
-  public constructor(data: RawTrackData, destinationUrl = data.url) {
+  public constructor(data: RawTrackData, isDestinationUrl = false) {
     this.title = data.title;
     this.description = data.description;
     this.author = data.author;
@@ -62,22 +62,38 @@ export class Track {
     this.views = data.views;
     this.live = data.live;
     this.queryType = data.queryType;
-    this._destinationUrl = destinationUrl;
     this.extractor = data.extractor;
+
+    if (isDestinationUrl)
+      this._destinationUrl = data.url;
   } 
+
+  /**
+   * Gets the URL to use for getting the streaming URL.
+   */
+  public get destinationURL(): string | null {
+    return this._destinationUrl;
+  }
+
+  /**
+   * Sets the URL to use for getting the streaming URL.
+   */
+  public set destinationURL(url: string | null) {
+    this._destinationUrl = url;
+  }
 
   /**
    * Gets the URL to use for streaming.
    */
-  public get streamingURL(): string | undefined {
-    return this._destinationUrl;
+  public get streamingURL(): string | null {
+    return this._streamingUrl;
   }
 
   /**
    * Sets the URL to use for streaming.
    */
-  public set streamingURL(url: string | undefined) {
-    this._destinationUrl = url;
+  public set streamingURL(url: string | null) {
+    this._streamingUrl = url;
   }
 
   /**
@@ -136,7 +152,7 @@ export class Track {
       queryType,
       extractor,
       live: video.live,
-    });
+    }, true);
   }
 
   /**
@@ -147,7 +163,7 @@ export class Track {
    * @returns 
    */
   public static fromSpotify(data: SpotifyTrack, extractor: Extractor, queryType: QueryType): Track {
-    const _temp = new this({
+    return new this({
       title: data.name,
       description: `${data.name} by ${data.artists.map((m) => m.name).join(', ')}`,
       author: data.artists[0]?.name.length ? data.artists[0].name : 'Unknown Author',
@@ -159,7 +175,5 @@ export class Track {
       extractor,
       live: false,
     });
-    _temp.streamingURL = undefined;
-    return _temp;
   }
 }
