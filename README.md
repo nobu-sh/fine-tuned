@@ -22,8 +22,6 @@ npm i @discordjs/opus@0.8.0 @discordjs/voice@0.14.0 ffmpeg-static@5.1.0
 
 Developed on `discord.js@14.7.0` later versions cannot guarantee functionality.
 
-when installed run this in terminal to get Spotify API credentials
-
 ## Authorization
 In order to utilize Spotify you will need to register a Spotify developer app.
 > Other packages achieve Spotify support by scraping data from the embed Iframes.
