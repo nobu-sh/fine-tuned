@@ -120,7 +120,6 @@ client.login("BOT_TOKEN")
 - [ ] - Make the queue actually do what its supposed to.
 - [ ] - Take time to ensure all pipelines are cleansed and there are no mem leaks.
 - [ ] - Add event emitters in.
-
 - [ ] - Look into hls streams randomly ending.
 - [ ] - Add more extractor types.
 - [ ] - Add support for filters finally.
