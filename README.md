@@ -110,24 +110,25 @@ client.login("BOT_TOKEN")
 ```
 
 ## Roadmap
+Most of this is random stuff that I need to do. Not a definite layout.
 
-- [ ] - Switch to play-dl fully for scraping.
-- [ ] - Clean up stream functions, very messy very bad rn.
-- [ ] - Redo Track and Playlist structures to contain better data. 
-- [ ] - Add a method on track to see if the streaming url is expired.
-- [ ] - Add a method on track to refresh the streaming url.
-- [ ] - Expose the rest of the needed api.
-- [ ] - Make the queue actually do what its supposed to.
-- [ ] - Take time to ensure all pipelines are cleansed and there are no mem leaks.
-- [ ] - Add event emitters in.
-- [ ] - Look into hls streams randomly ending.
-- [ ] - Add more extractor types.
-- [ ] - Add support for filters finally.
-- [ ] - Add support for using YouTube cookie so request blocking doesn't occur.
-- [ ] - Add support for using multiple YouTube cookies to make activity look less bot.
-- [ ] - Add support for registering custom extractors.
-- [ ] - Add support for doing piped streams to FFmpeg again for local files.
-- [ ] - Go through comment anchors and clean up broken stuff.
+- [ ] Switch to play-dl fully for scraping.
+- [ ] Clean up stream functions, very messy very bad rn.
+- [ ] Redo Track and Playlist structures to contain better data. 
+- [ ] Add a method on track to see if the streaming url is expired.
+- [ ] Add a method on track to refresh the streaming url.
+- [ ] Expose the rest of the needed api.
+- [ ] Make the queue actually do what its supposed to.
+- [ ] Take time to ensure all pipelines are cleansed and there are no mem leaks.
+- [ ] Add event emitters in.
+- [ ] Look into hls streams randomly ending.
+- [ ] Add more extractor types.
+- [ ] Add support for filters finally.
+- [ ] Add support for using YouTube cookie so request blocking doesn't occur.
+- [ ] Add support for using multiple YouTube cookies to make activity look less bot.
+- [ ] Add support for registering custom extractors.
+- [ ] Add support for doing piped streams to FFmpeg again for local files.
+- [ ] Go through comment anchors and clean up broken stuff.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
