@@ -1,7 +1,7 @@
 {
   "name": "fine-tuned",
   "version": "0.0.1",
-  "description": "The best package for playing moosic with DJS.",
+  "description": "A package for playing music with Discord.js",
   "license": "MIT",
   "author": "nobu-sh",
   "scripts": {
