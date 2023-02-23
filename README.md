@@ -130,4 +130,4 @@ client.login("BOT_TOKEN")
 - [ ] - Go through comment anchors and clean up broken stuff.
 
 ## License
-
+[MIT](https://choosealicense.com/licenses/mit/)
