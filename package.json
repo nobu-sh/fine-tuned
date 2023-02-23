@@ -1,6 +1,6 @@
 {
   "name": "fine-tuned",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "A package for playing music with Discord.js",
   "license": "MIT",
   "author": "nobu-sh",
